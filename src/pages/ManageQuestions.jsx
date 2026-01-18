@@ -206,10 +206,13 @@ function ManageQuestions() {
                           )
                         }
                         const isCorrect = partnerAnswer.selectedIndex === question.correctIndex
+                        const selectedChoice = question.choices[partnerAnswer.selectedIndex]
                         return (
                           <div className={`partner-answer-status ${isCorrect ? 'answered-correct' : 'answered-wrong'}`}>
                             <span className="status-icon">{isCorrect ? '✓' : '✗'}</span>
-                            <span>{partnerName} answered {isCorrect ? 'correctly' : 'incorrectly'}</span>
+                            <span>
+                              {partnerName} answered "<strong>{selectedChoice}</strong>" — {isCorrect ? 'correct!' : 'incorrect'}
+                            </span>
                           </div>
                         )
                       })()}
