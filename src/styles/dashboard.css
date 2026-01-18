@@ -1,0 +1,124 @@
+.dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-xl);
+  border-bottom: 1px solid var(--color-bg-soft);
+}
+
+.current-identity {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.current-identity strong {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.online-badge {
+  color: var(--color-correct);
+  margin-left: var(--space-xs);
+  font-size: 0.6rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.refresh-button {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+
+.refresh-button:hover {
+  background-color: var(--color-bg-soft);
+  color: var(--color-text);
+}
+
+.switch-button {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.switch-button:hover {
+  background-color: var(--color-bg-soft);
+  color: var(--color-text);
+}
+
+.dashboard-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.dashboard-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 360px;
+  width: 100%;
+}
+
+.dashboard-option {
+  text-align: left;
+  padding: var(--space-lg) var(--space-xl);
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-bg-soft);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-option:hover {
+  border-color: var(--color-chocolate-light);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-option.secondary {
+  background: var(--color-bg-soft);
+  border-color: transparent;
+}
+
+.dashboard-option.secondary:hover {
+  background: var(--color-bg);
+  border-color: var(--color-text-light);
+}
+
+.option-title {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.option-hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.option-hint.muted {
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+.loading-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
