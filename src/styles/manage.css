@@ -178,3 +178,33 @@
   background: var(--color-bg);
   color: var(--color-text);
 }
+
+/* Partner answer status */
+.partner-answer-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-top: var(--space-sm);
+}
+
+.partner-answer-status .status-icon {
+  font-size: 1rem;
+}
+
+.partner-answer-status.not-answered {
+  background: var(--color-bg-soft);
+  color: var(--color-text-muted);
+}
+
+.partner-answer-status.answered-correct {
+  background: var(--color-correct-bg);
+  color: var(--color-correct);
+}
+
+.partner-answer-status.answered-wrong {
+  background: var(--color-selected-wrong-bg);
+  color: var(--color-selected-wrong);
+}

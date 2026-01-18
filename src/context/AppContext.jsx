@@ -310,6 +310,13 @@ export function AppProvider({ children }) {
     return myAnswers[questionId] || null
   }
 
+  // Get partner's answer for a question (to see if they got it right)
+  const getPartnerAnswer = (questionId) => {
+    const partnerIdentity = getOppositeIdentity()
+    const partnerAnswers = answeredQuestions[partnerIdentity] || {}
+    return partnerAnswers[questionId] || null
+  }
+
   const value = {
     identity,
     selectIdentity,
@@ -324,6 +331,7 @@ export function AppProvider({ children }) {
     toggleQuestionActive,
     markAnswered,
     getAnswer,
+    getPartnerAnswer,
     loading,
     refreshData,
     isOnline: isSupabaseConfigured()

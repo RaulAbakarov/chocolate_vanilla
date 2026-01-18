@@ -5,7 +5,7 @@ import '../styles/manage.css'
 
 function ManageQuestions() {
   const navigate = useNavigate()
-  const { getMyQuestions, updateQuestion, deleteQuestion, toggleQuestionActive } = useApp()
+  const { getMyQuestions, updateQuestion, deleteQuestion, toggleQuestionActive, getPartnerAnswer, getOppositeIdentity } = useApp()
   
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState(null)
@@ -194,6 +194,25 @@ function ManageQuestions() {
                       {question.explanation && (
                         <p className="explanation-preview">"{question.explanation}"</p>
                       )}
+                      {(() => {
+                        const partnerAnswer = getPartnerAnswer(question.id)
+                        const partnerName = getOppositeIdentity()
+                        if (!partnerAnswer) {
+                          return (
+                            <div className="partner-answer-status not-answered">
+                              <span className="status-icon">⏳</span>
+                              <span>{partnerName} hasn't answered yet</span>
+                            </div>
+                          )
+                        }
+                        const isCorrect = partnerAnswer.selectedIndex === question.correctIndex
+                        return (
+                          <div className={`partner-answer-status ${isCorrect ? 'answered-correct' : 'answered-wrong'}`}>
+                            <span className="status-icon">{isCorrect ? '✓' : '✗'}</span>
+                            <span>{partnerName} answered {isCorrect ? 'correctly' : 'incorrectly'}</span>
+                          </div>
+                        )
+                      })()}
                     </div>
 
                     <div className="question-actions">
