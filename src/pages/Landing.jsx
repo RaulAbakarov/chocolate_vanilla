@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 import '../styles/landing.css'
@@ -5,10 +6,27 @@ import '../styles/landing.css'
 function Landing() {
   const navigate = useNavigate()
   const { selectIdentity, identity } = useApp()
+  const [nickname, setNickname] = useState('')
+  const [error, setError] = useState('')
 
-  const handleSelect = (id) => {
-    selectIdentity(id)
-    navigate('/dashboard')
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const input = nickname.trim().toLowerCase()
+    
+    if (input === 'vanilla') {
+      selectIdentity('Vanilla')
+      navigate('/dashboard')
+    } else if (input === 'chocolate') {
+      selectIdentity('Chocolate')
+      navigate('/dashboard')
+    } else {
+      setError('Invalid nickname')
+    }
+  }
+
+  const handleInputChange = (e) => {
+    setNickname(e.target.value)
+    if (error) setError('')
   }
 
   // If already has identity, go to dashboard
@@ -22,21 +40,20 @@ function Landing() {
       <div className="landing-content">
         <p className="landing-message">This website is designed for us.</p>
         
-        <div className="identity-buttons">
-          <button 
-            className="identity-button chocolate"
-            onClick={() => handleSelect('Chocolate')}
-          >
-            Chocolate
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            className="nickname-input"
+            placeholder="Enter your nickname"
+            value={nickname}
+            onChange={handleInputChange}
+            autoFocus
+          />
+          {error && <p className="login-error">{error}</p>}
+          <button type="submit" className="login-button">
+            Enter
           </button>
-          
-          <button 
-            className="identity-button vanilla"
-            onClick={() => handleSelect('Vanilla')}
-          >
-            Vanilla
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   )
