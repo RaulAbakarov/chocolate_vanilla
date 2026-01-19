@@ -62,6 +62,7 @@
 .dashboard-content {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: var(--space-xl);
@@ -121,4 +122,69 @@
   font-family: var(--font-serif);
   font-style: italic;
   color: var(--color-text-muted);
+}
+
+/* Relationship Timer */
+.relationship-timer {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.timer-label {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50px;
+  padding: var(--space-sm) var(--space-md);
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.timer-value {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-chocolate);
+  line-height: 1.2;
+}
+
+.timer-name {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 480px) {
+  .timer-display {
+    gap: var(--space-xs);
+  }
+  
+  .timer-unit {
+    min-width: 40px;
+    padding: var(--space-xs) var(--space-sm);
+  }
+  
+  .timer-value {
+    font-size: 1.2rem;
+  }
+  
+  .timer-name {
+    font-size: 0.6rem;
+  }
 }
