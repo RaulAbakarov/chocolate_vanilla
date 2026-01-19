@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 import '../styles/landing.css'
@@ -8,6 +8,13 @@ function Landing() {
   const { selectIdentity, identity } = useApp()
   const [nickname, setNickname] = useState('')
   const [error, setError] = useState('')
+
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    if (identity) {
+      navigate('/dashboard')
+    }
+  }, [identity, navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -29,9 +36,8 @@ function Landing() {
     if (error) setError('')
   }
 
-  // If already has identity, go to dashboard
+  // Show nothing while redirecting
   if (identity) {
-    navigate('/dashboard')
     return null
   }
 

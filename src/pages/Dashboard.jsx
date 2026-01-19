@@ -80,28 +80,24 @@ function Dashboard() {
 
       <div className="dashboard-content">
         <div className="relationship-timer">
-          <p className="timer-label">Together for</p>
+          <p className="timer-label">Together since October 11, 2025</p>
           <div className="timer-display">
-            <div className="timer-unit">
-              <span className="timer-value">{timeSince.months}</span>
-              <span className="timer-name">months</span>
-            </div>
-            <div className="timer-unit">
-              <span className="timer-value">{timeSince.days}</span>
-              <span className="timer-name">days</span>
-            </div>
-            <div className="timer-unit">
-              <span className="timer-value">{String(timeSince.hours).padStart(2, '0')}</span>
-              <span className="timer-name">hours</span>
-            </div>
-            <div className="timer-unit">
-              <span className="timer-value">{String(timeSince.minutes).padStart(2, '0')}</span>
-              <span className="timer-name">min</span>
-            </div>
-            <div className="timer-unit">
-              <span className="timer-value">{String(timeSince.seconds).padStart(2, '0')}</span>
-              <span className="timer-name">sec</span>
-            </div>
+            <span className="timer-value">{timeSince.months}</span>
+            <span className="timer-separator">:</span>
+            <span className="timer-value">{String(timeSince.days).padStart(2, '0')}</span>
+            <span className="timer-separator">:</span>
+            <span className="timer-value">{String(timeSince.hours).padStart(2, '0')}</span>
+            <span className="timer-separator">:</span>
+            <span className="timer-value">{String(timeSince.minutes).padStart(2, '0')}</span>
+            <span className="timer-separator">:</span>
+            <span className="timer-value">{String(timeSince.seconds).padStart(2, '0')}</span>
+          </div>
+          <div className="timer-labels">
+            <span>months</span>
+            <span>days</span>
+            <span>hours</span>
+            <span>min</span>
+            <span>sec</span>
           </div>
         </div>
 

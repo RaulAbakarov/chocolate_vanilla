@@ -128,63 +128,75 @@
 .relationship-timer {
   text-align: center;
   margin-bottom: var(--space-2xl);
+  padding: var(--space-lg) var(--space-xl);
+  background: linear-gradient(135deg, var(--color-vanilla) 0%, white 50%, var(--color-vanilla) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .timer-label {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 .timer-display {
   display: flex;
   justify-content: center;
-  gap: var(--space-sm);
-}
-
-.timer-unit {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  min-width: 50px;
-  padding: var(--space-sm) var(--space-md);
-  background: white;
-  border-radius: var(--radius-md);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
 }
 
 .timer-value {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 2rem;
+  font-weight: 600;
   color: var(--color-chocolate);
-  line-height: 1.2;
+  min-width: 2ch;
+  text-align: center;
 }
 
-.timer-name {
-  font-size: 0.7rem;
+.timer-separator {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--color-text-light);
+  margin: 0 2px;
+}
+
+.timer-labels {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+}
+
+.timer-labels span {
+  font-size: 0.65rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  min-width: 40px;
+  text-align: center;
 }
 
 @media (max-width: 480px) {
-  .timer-display {
-    gap: var(--space-xs);
-  }
-  
-  .timer-unit {
-    min-width: 40px;
-    padding: var(--space-xs) var(--space-sm);
-  }
-  
   .timer-value {
+    font-size: 1.4rem;
+  }
+  
+  .timer-separator {
     font-size: 1.2rem;
   }
   
-  .timer-name {
-    font-size: 0.6rem;
+  .timer-labels {
+    gap: var(--space-md);
+  }
+  
+  .timer-labels span {
+    font-size: 0.55rem;
+    min-width: 32px;
   }
 }
