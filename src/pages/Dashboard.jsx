@@ -24,8 +24,11 @@ function calculateTimeSince(startDate) {
 
 function Dashboard() {
   const navigate = useNavigate()
-  const { identity, clearIdentity, getQuestionsForMe, getMyQuestions, loading, refreshData, isOnline } = useApp()
+  const { identity, clearIdentity, getQuestionsForMe, getMyQuestions, loading, refreshData, isOnline, messages, sendMessage } = useApp()
   const [timeSince, setTimeSince] = useState(calculateTimeSince(START_DATE))
+  const [loveWord, setLoveWord] = useState('love')
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState('love')
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,6 +36,37 @@ function Dashboard() {
     }, 1000)
     return () => clearInterval(interval)
   }, [])
+
+  const handleSendLove = () => {
+    const message = `I ${loveWord} you`
+    sendMessage(message)
+  }
+
+  const handleEditClick = () => {
+    setEditValue(loveWord)
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = () => {
+    if (editValue.trim()) {
+      setLoveWord(editValue.trim())
+    }
+    setIsEditing(false)
+  }
+
+  const handleCancelEdit = () => {
+    setIsEditing(false)
+  }
+
+  const formatMessageTime = (dateStr) => {
+    const date = new Date(dateStr)
+    return date.toLocaleString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+  }
   
   if (loading) {
     return (
@@ -141,6 +175,48 @@ function Dashboard() {
             </button>
           )}
         </div>
+
+        {/* Love Button Section */}
+        <div className="love-section">
+          {isEditing ? (
+            <div className="love-edit">
+              <span>I </span>
+              <input
+                type="text"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                className="love-input"
+                autoFocus
+              />
+              <span> you</span>
+              <button className="love-save-btn" onClick={handleSaveEdit}>✓</button>
+              <button className="love-cancel-btn" onClick={handleCancelEdit}>✕</button>
+            </div>
+          ) : (
+            <div className="love-buttons">
+              <button className="love-button" onClick={handleSendLove}>
+                I <span className="love-word">{loveWord}</span> you
+              </button>
+              <button className="love-edit-btn" onClick={handleEditClick}>✎</button>
+            </div>
+          )}
+        </div>
+
+        {/* Messages Section */}
+        {messages.length > 0 && (
+          <div className="messages-section">
+            <h3 className="messages-title">Messages</h3>
+            <div className="messages-list">
+              {messages.map(msg => (
+                <div key={msg.id} className={`message-item ${msg.sender === identity ? 'sent' : 'received'}`}>
+                  <span className="message-sender">{msg.sender}</span>
+                  <span className="message-text">{msg.text}</span>
+                  <span className="message-time">{formatMessageTime(msg.createdAt)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -6,7 +6,8 @@ const AppContext = createContext(null)
 const STORAGE_KEYS = {
   IDENTITY: 'cv_identity',
   QUESTIONS: 'cv_questions',
-  ANSWERED: 'cv_answered'
+  ANSWERED: 'cv_answered',
+  MESSAGES: 'cv_messages'
 }
 
 export function AppProvider({ children }) {
@@ -17,6 +18,7 @@ export function AppProvider({ children }) {
 
   const [questions, setQuestions] = useState([])
   const [answeredQuestions, setAnsweredQuestions] = useState({})
+  const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
 
   // Persist identity to localStorage
@@ -41,15 +43,20 @@ export function AppProvider({ children }) {
   const loadFromLocalStorage = () => {
     const savedQuestions = localStorage.getItem(STORAGE_KEYS.QUESTIONS)
     const savedAnswered = localStorage.getItem(STORAGE_KEYS.ANSWERED)
+    const savedMessages = localStorage.getItem(STORAGE_KEYS.MESSAGES)
     setQuestions(savedQuestions ? JSON.parse(savedQuestions) : [])
     setAnsweredQuestions(savedAnswered ? JSON.parse(savedAnswered) : {})
+    setMessages(savedMessages ? JSON.parse(savedMessages) : [])
     setLoading(false)
   }
 
   // Save to localStorage (fallback)
-  const saveToLocalStorage = (newQuestions, newAnswered) => {
+  const saveToLocalStorage = (newQuestions, newAnswered, newMessages) => {
     localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(newQuestions))
     localStorage.setItem(STORAGE_KEYS.ANSWERED, JSON.stringify(newAnswered))
+    if (newMessages !== undefined) {
+      localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(newMessages))
+    }
   }
 
   // Load from Supabase
@@ -96,6 +103,26 @@ export function AppProvider({ children }) {
         }
       })
       setAnsweredQuestions(formattedAnswers)
+
+      // Load messages
+      try {
+        const { data: messagesData, error: messagesError } = await supabase
+          .from('messages')
+          .select('*')
+          .order('created_at', { ascending: false })
+
+        if (!messagesError && messagesData) {
+          const formattedMessages = messagesData.map(m => ({
+            id: m.id,
+            text: m.text,
+            sender: m.sender,
+            createdAt: m.created_at
+          }))
+          setMessages(formattedMessages)
+        }
+      } catch (msgError) {
+        console.log('Messages table may not exist yet:', msgError)
+      }
 
     } catch (error) {
       console.error('Error loading from Supabase:', error)
@@ -317,6 +344,55 @@ export function AppProvider({ children }) {
     return partnerAnswers[questionId] || null
   }
 
+  // Send a love message
+  const sendMessage = async (text) => {
+    const newMessage = {
+      text,
+      sender: identity,
+      createdAt: new Date().toISOString()
+    }
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .insert({
+            text: newMessage.text,
+            sender: newMessage.sender
+          })
+          .select()
+          .single()
+
+        if (error) throw error
+
+        const formattedMessage = {
+          id: data.id,
+          text: data.text,
+          sender: data.sender,
+          createdAt: data.created_at
+        }
+        setMessages(prev => [formattedMessage, ...prev])
+        return formattedMessage
+      } catch (error) {
+        console.error('Error sending message:', error)
+        // Fallback to localStorage
+        const id = Date.now().toString(36) + Math.random().toString(36).substr(2)
+        const messageWithId = { ...newMessage, id }
+        const newMessages = [messageWithId, ...messages]
+        setMessages(newMessages)
+        saveToLocalStorage(questions, answeredQuestions, newMessages)
+        return messageWithId
+      }
+    } else {
+      const id = Date.now().toString(36) + Math.random().toString(36).substr(2)
+      const messageWithId = { ...newMessage, id }
+      const newMessages = [messageWithId, ...messages]
+      setMessages(newMessages)
+      saveToLocalStorage(questions, answeredQuestions, newMessages)
+      return messageWithId
+    }
+  }
+
   const value = {
     identity,
     selectIdentity,
@@ -332,6 +408,8 @@ export function AppProvider({ children }) {
     markAnswered,
     getAnswer,
     getPartnerAnswer,
+    messages,
+    sendMessage,
     loading,
     refreshData,
     isOnline: isSupabaseConfigured()
