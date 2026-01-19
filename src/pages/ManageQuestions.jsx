@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/manage.css'
 
 function ManageQuestions() {
   const navigate = useNavigate()
   const { getMyQuestions, updateQuestion, deleteQuestion, toggleQuestionActive, getPartnerAnswer, getOppositeIdentity } = useApp()
+  const { t } = useLanguage()
   
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState(null)
@@ -83,7 +85,7 @@ function ManageQuestions() {
   }
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this question?')) {
+    if (window.confirm(t('confirmDelete'))) {
       deleteQuestion(id)
     }
   }
@@ -92,13 +94,13 @@ function ManageQuestions() {
     <div className="manage-page">
       <div className="manage-container">
         <button className="back-link" onClick={handleBack}>
-          ← Back
+          {t('back')}
         </button>
 
-        <h1 className="page-title">Your Questions</h1>
+        <h1 className="page-title">{t('yourQuestions')}</h1>
 
         {myQuestions.length === 0 ? (
-          <p className="no-questions-text">You haven't created any questions yet.</p>
+          <p className="no-questions-text">{t('noQuestionsYet')}</p>
         ) : (
           <div className="questions-list">
             {myQuestions.map(question => (
@@ -106,7 +108,7 @@ function ManageQuestions() {
                 {editingId === question.id ? (
                   <div className="edit-form">
                     <div className="form-group">
-                      <label>Question</label>
+                      <label>{t('question')}</label>
                       <textarea
                         value={editForm.text}
                         onChange={(e) => handleEditFormChange('text', e.target.value)}
@@ -115,7 +117,7 @@ function ManageQuestions() {
                     </div>
 
                     <div className="form-group">
-                      <label>Choices</label>
+                      <label>{t('choices')}</label>
                       <div className="choices-list">
                         {editForm.choices.map((choice, index) => (
                           <div key={index} className="choice-input-row">
@@ -148,12 +150,12 @@ function ManageQuestions() {
                         className="add-choice-button"
                         onClick={handleAddChoice}
                       >
-                        + Add choice
+                        {t('addChoice')}
                       </button>
                     </div>
 
                     <div className="form-group">
-                      <label>Explanation (optional)</label>
+                      <label>{t('explanationOptional')}</label>
                       <textarea
                         value={editForm.explanation}
                         onChange={(e) => handleEditFormChange('explanation', e.target.value)}
@@ -167,13 +169,13 @@ function ManageQuestions() {
                         onClick={() => saveEdit(question.id)}
                         disabled={!isEditValid()}
                       >
-                        Save
+                        {t('save')}
                       </button>
                       <button 
                         className="cancel-button"
                         onClick={cancelEditing}
                       >
-                        Cancel
+                        {t('cancel')}
                       </button>
                     </div>
                   </div>
@@ -201,7 +203,7 @@ function ManageQuestions() {
                           return (
                             <div className="partner-answer-status not-answered">
                               <span className="status-icon">⏳</span>
-                              <span>{partnerName} hasn't answered yet</span>
+                              <span>{partnerName} {t('hasntAnsweredYet')}</span>
                             </div>
                           )
                         }
@@ -211,7 +213,7 @@ function ManageQuestions() {
                           <div className={`partner-answer-status ${isCorrect ? 'answered-correct' : 'answered-wrong'}`}>
                             <span className="status-icon">{isCorrect ? '✓' : '✗'}</span>
                             <span>
-                              {partnerName} answered "<strong>{selectedChoice}</strong>" — {isCorrect ? 'correct!' : 'incorrect'}
+                              {partnerName} {t('answered')} "<strong>{selectedChoice}</strong>" — {isCorrect ? t('correct') : t('incorrect')}
                             </span>
                           </div>
                         )
@@ -223,19 +225,19 @@ function ManageQuestions() {
                         className="action-button"
                         onClick={() => startEditing(question)}
                       >
-                        Edit
+                        {t('edit')}
                       </button>
                       <button 
                         className="action-button"
                         onClick={() => toggleQuestionActive(question.id)}
                       >
-                        {question.active ? 'Deactivate' : 'Activate'}
+                        {question.active ? t('deactivate') : t('activate')}
                       </button>
                       <button 
                         className="action-button delete"
                         onClick={() => handleDelete(question.id)}
                       >
-                        Delete
+                        {t('delete')}
                       </button>
                     </div>
                   </>

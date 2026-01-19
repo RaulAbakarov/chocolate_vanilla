@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/dashboard.css'
 
 // October 11, 2025 - the day we first texted
@@ -25,6 +26,7 @@ function calculateTimeSince(startDate) {
 function Dashboard() {
   const navigate = useNavigate()
   const { identity, clearIdentity, getQuestionsForMe, getMyQuestions, loading, refreshData, isOnline, messages, sendMessage, streak } = useApp()
+  const { t } = useLanguage()
   const [timeSince, setTimeSince] = useState(calculateTimeSince(START_DATE))
   const [loveWord, setLoveWord] = useState('love')
   const [isEditing, setIsEditing] = useState(false)
@@ -72,7 +74,7 @@ function Dashboard() {
     return (
       <div className="dashboard">
         <div className="dashboard-content">
-          <p className="loading-text">Loading...</p>
+          <p className="loading-text">{t('loading')}</p>
         </div>
       </div>
     )
@@ -90,7 +92,7 @@ function Dashboard() {
     <div className="dashboard">
       <header className="dashboard-header">
         <span className="current-identity">
-          You are <strong>{identity}</strong>
+          {t('youAre')} <strong>{identity}</strong>
           {isOnline && <span className="online-badge">●</span>}
         </span>
         <div className="header-actions">
@@ -107,14 +109,14 @@ function Dashboard() {
             className="switch-button"
             onClick={handleSwitchIdentity}
           >
-            Switch
+            {t('switch')}
           </button>
         </div>
       </header>
 
       <div className="dashboard-content">
         <div className="relationship-timer">
-          <p className="timer-label">Together since October 11, 2025</p>
+          <p className="timer-label">{t('togetherSince')}</p>
           <div className="timer-display">
             <span className="timer-value">{timeSince.months}</span>
             <span className="timer-separator">:</span>
@@ -127,11 +129,11 @@ function Dashboard() {
             <span className="timer-value">{String(timeSince.seconds).padStart(2, '0')}</span>
           </div>
           <div className="timer-labels">
-            <span>months</span>
-            <span>days</span>
-            <span>hours</span>
-            <span>min</span>
-            <span>sec</span>
+            <span>{t('months')}</span>
+            <span>{t('days')}</span>
+            <span>{t('hours')}</span>
+            <span>{t('min')}</span>
+            <span>{t('sec')}</span>
           </div>
         </div>
 
@@ -144,7 +146,7 @@ function Dashboard() {
           </div>
           <div className="streak-info">
             <span className="streak-count">{streak.count}</span>
-            <span className="streak-label">day streak</span>
+            <span className="streak-label">{t('dayStreak')}</span>
           </div>
         </div>
 
@@ -153,15 +155,15 @@ function Dashboard() {
             className="dashboard-option"
             onClick={() => navigate('/answer')}
           >
-            <span className="option-title">Answer Questions</span>
+            <span className="option-title">{t('answerQuestions')}</span>
             {questionsForMe.length > 0 && (
               <span className="option-hint">
-                {questionsForMe.length} waiting for you
+                {questionsForMe.length} {t('waitingForYou')}
               </span>
             )}
             {questionsForMe.length === 0 && (
               <span className="option-hint muted">
-                No new questions right now
+                {t('noNewQuestions')}
               </span>
             )}
           </button>
@@ -170,9 +172,9 @@ function Dashboard() {
             className="dashboard-option"
             onClick={() => navigate('/ask')}
           >
-            <span className="option-title">Ask a Question</span>
+            <span className="option-title">{t('askQuestion')}</span>
             <span className="option-hint">
-              Write something for {identity === 'Chocolate' ? 'Vanilla' : 'Chocolate'}
+              {t('writeFor')} {identity === 'Chocolate' ? 'Vanilla' : 'Chocolate'}
             </span>
           </button>
 
@@ -181,9 +183,9 @@ function Dashboard() {
               className="dashboard-option secondary"
               onClick={() => navigate('/manage')}
             >
-              <span className="option-title">Manage My Questions</span>
+              <span className="option-title">{t('manageMyQuestions')}</span>
               <span className="option-hint">
-                {myQuestions.length} question{myQuestions.length !== 1 ? 's' : ''} created
+                {myQuestions.length} {t('questionsCreated')}
               </span>
             </button>
           )}
@@ -218,7 +220,7 @@ function Dashboard() {
         {/* Messages Section */}
         {messages.length > 0 && (
           <div className="messages-section">
-            <h3 className="messages-title">Messages</h3>
+            <h3 className="messages-title">{t('messages')}</h3>
             <div className="messages-list">
               {messages.map(msg => (
                 <div key={msg.id} className={`message-item ${msg.sender === identity ? 'sent' : 'received'}`}>

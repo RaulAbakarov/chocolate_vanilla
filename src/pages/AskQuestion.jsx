@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/ask.css'
 
 function AskQuestion() {
   const navigate = useNavigate()
   const { addQuestion, getOppositeIdentity } = useApp()
+  const { t } = useLanguage()
 
   const [text, setText] = useState('')
   const [choices, setChoices] = useState(['', ''])
@@ -73,31 +75,31 @@ function AskQuestion() {
     <div className="ask-page">
       <div className="ask-container">
         <button className="back-link" onClick={handleBack}>
-          ← Back
+          {t('back')}
         </button>
 
-        <h1 className="page-title">Ask {targetName} a question</h1>
+        <h1 className="page-title">{t('askTitle', { target: targetName })}</h1>
 
         {saved ? (
           <div className="saved-message">
-            <p>Your question has been saved.</p>
+            <p>{t('questionSaved')}</p>
           </div>
         ) : (
           <form className="question-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="question-text">Your question</label>
+              <label htmlFor="question-text">{t('yourQuestion')}</label>
               <textarea
                 id="question-text"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="What would you like to ask?"
+                placeholder={t('whatToAsk')}
                 rows={3}
               />
             </div>
 
             <div className="form-group">
-              <label>Choices</label>
-              <p className="form-hint">Select the correct answer</p>
+              <label>{t('choices')}</label>
+              <p className="form-hint">{t('selectCorrectAnswer')}</p>
               
               <div className="choices-list">
                 {choices.map((choice, index) => (
@@ -113,7 +115,7 @@ function AskQuestion() {
                       type="text"
                       value={choice}
                       onChange={(e) => handleChoiceChange(index, e.target.value)}
-                      placeholder={`Choice ${index + 1}`}
+                      placeholder={`${t('choice')} ${index + 1}`}
                       className="choice-input"
                     />
                     {choices.length > 2 && (
@@ -134,19 +136,19 @@ function AskQuestion() {
                 className="add-choice-button"
                 onClick={handleAddChoice}
               >
-                + Add another choice
+                {t('addAnotherChoice')}
               </button>
             </div>
 
             <div className="form-group">
               <label htmlFor="explanation">
-                Explanation <span className="optional">(optional)</span>
+                {t('explanation')} <span className="optional">({t('optional')})</span>
               </label>
               <textarea
                 id="explanation"
                 value={explanation}
                 onChange={(e) => setExplanation(e.target.value)}
-                placeholder="Why is this the correct answer? Share your thoughts..."
+                placeholder={t('whyCorrect')}
                 rows={3}
               />
             </div>
@@ -156,7 +158,7 @@ function AskQuestion() {
               className="submit-button"
               disabled={!isValid()}
             >
-              Save Question
+              {t('saveQuestion')}
             </button>
           </form>
         )}

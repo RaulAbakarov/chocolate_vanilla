@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/landing.css'
 
 function Landing() {
   const navigate = useNavigate()
   const { selectIdentity, identity, loading } = useApp()
+  const { t } = useLanguage()
   const [nickname, setNickname] = useState('')
   const [error, setError] = useState('')
 
@@ -44,20 +46,20 @@ function Landing() {
   return (
     <div className="landing">
       <div className="landing-content">
-        <p className="landing-message">This website is designed for us.</p>
+        <p className="landing-message">{t('landingMessage')}</p>
         
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="text"
             className="nickname-input"
-            placeholder="Enter your nickname"
+            placeholder={t('enterNickname')}
             value={nickname}
             onChange={handleInputChange}
             autoFocus
           />
-          {error && <p className="login-error">{error}</p>}
+          {error && <p className="login-error">{t('invalidNickname')}</p>}
           <button type="submit" className="login-button">
-            Enter
+            {t('enter')}
           </button>
         </form>
       </div>

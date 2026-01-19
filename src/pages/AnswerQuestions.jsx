@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/answer.css'
 
 function AnswerQuestions() {
   const navigate = useNavigate()
   const { getQuestionsForMe, markAnswered, getAnswer, questions } = useApp()
+  const { t } = useLanguage()
   
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
@@ -47,9 +49,9 @@ function AnswerQuestions() {
       <div className="answer-page">
         <div className="answer-container">
           <div className="no-questions">
-            <p className="calm-message">There are no questions waiting for you right now.</p>
+            <p className="calm-message">{t('noQuestionsWaiting')}</p>
             <button className="back-button" onClick={handleBack}>
-              Go back
+              {t('goBack')}
             </button>
           </div>
         </div>
@@ -63,9 +65,9 @@ function AnswerQuestions() {
       <div className="answer-page">
         <div className="answer-container">
           <div className="all-done">
-            <p className="calm-message">That's all for now.</p>
+            <p className="calm-message">{t('thatsAll')}</p>
             <button className="back-button" onClick={handleBack}>
-              Go back
+              {t('goBack')}
             </button>
           </div>
         </div>
@@ -77,7 +79,7 @@ function AnswerQuestions() {
     <div className="answer-page">
       <div className="answer-container">
         <button className="back-link" onClick={handleBack}>
-          ← Back
+          {t('back')}
         </button>
 
         <div className="question-card">
@@ -112,8 +114,8 @@ function AnswerQuestions() {
             <div className="result-section">
               <p className="result-message">
                 {selectedAnswer === currentQuestion.correctIndex 
-                  ? "Yes, that's it." 
-                  : "This is what I meant."}
+                  ? t('correctAnswer') 
+                  : t('wrongAnswer')}
               </p>
               
               {currentQuestion.explanation && (
@@ -124,8 +126,8 @@ function AnswerQuestions() {
 
               <button className="next-button" onClick={handleNext}>
                 {currentIndex < questionsToAnswer.length - 1 
-                  ? 'Next Question' 
-                  : 'Finish'}
+                  ? t('nextQuestion') 
+                  : t('finish')}
               </button>
             </div>
           )}
