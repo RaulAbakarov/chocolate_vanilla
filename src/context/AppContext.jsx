@@ -7,7 +7,8 @@ const STORAGE_KEYS = {
   IDENTITY: 'cv_identity',
   QUESTIONS: 'cv_questions',
   ANSWERED: 'cv_answered',
-  MESSAGES: 'cv_messages'
+  MESSAGES: 'cv_messages',
+  STREAK: 'cv_streak'
 }
 
 export function AppProvider({ children }) {
@@ -19,6 +20,7 @@ export function AppProvider({ children }) {
   const [questions, setQuestions] = useState([])
   const [answeredQuestions, setAnsweredQuestions] = useState({})
   const [messages, setMessages] = useState([])
+  const [streak, setStreak] = useState({ count: 0, lastUpdated: null })
   const [loading, setLoading] = useState(true)
 
   // Persist identity to localStorage
@@ -44,9 +46,11 @@ export function AppProvider({ children }) {
     const savedQuestions = localStorage.getItem(STORAGE_KEYS.QUESTIONS)
     const savedAnswered = localStorage.getItem(STORAGE_KEYS.ANSWERED)
     const savedMessages = localStorage.getItem(STORAGE_KEYS.MESSAGES)
+    const savedStreak = localStorage.getItem(STORAGE_KEYS.STREAK)
     setQuestions(savedQuestions ? JSON.parse(savedQuestions) : [])
     setAnsweredQuestions(savedAnswered ? JSON.parse(savedAnswered) : {})
     setMessages(savedMessages ? JSON.parse(savedMessages) : [])
+    if (savedStreak) setStreak(JSON.parse(savedStreak))
     setLoading(false)
   }
 
@@ -130,6 +134,25 @@ export function AppProvider({ children }) {
         }
       } catch (msgError) {
         console.log('Messages table may not exist yet:', msgError)
+      }
+
+      // Load streak
+      try {
+        const { data: streakData, error: streakError } = await supabase
+          .from('streak')
+          .select('*')
+          .single()
+
+        if (!streakError && streakData) {
+          setStreak({
+            count: streakData.count,
+            lastUpdated: streakData.last_updated
+          })
+        }
+      } catch (streakError) {
+        // Load from localStorage if table doesn't exist
+        const savedStreak = localStorage.getItem(STORAGE_KEYS.STREAK)
+        if (savedStreak) setStreak(JSON.parse(savedStreak))
       }
 
     } catch (error) {
@@ -401,6 +424,70 @@ export function AppProvider({ children }) {
     }
   }
 
+  // Check and update streak - called after sending a message
+  const checkAndUpdateStreak = useCallback(async (currentMessages) => {
+    const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD
+    
+    // Check if streak was already updated today
+    if (streak.lastUpdated === today) {
+      return // Already updated today
+    }
+
+    // Check if both users have messaged today
+    const todayMessages = currentMessages.filter(m => 
+      m.createdAt.split('T')[0] === today
+    )
+    
+    const chocolateMessaged = todayMessages.some(m => m.sender === 'Chocolate')
+    const vanillaMessaged = todayMessages.some(m => m.sender === 'Vanilla')
+    
+    if (chocolateMessaged && vanillaMessaged) {
+      // Check if yesterday was the last update (for streak continuity)
+      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      let newCount = 1
+      
+      if (streak.lastUpdated === yesterday) {
+        // Continue the streak
+        newCount = streak.count + 1
+      } else if (streak.lastUpdated === null) {
+        // First time
+        newCount = 1
+      } else {
+        // Streak was broken, start fresh
+        newCount = 1
+      }
+      
+      const newStreak = { count: newCount, lastUpdated: today }
+      setStreak(newStreak)
+      
+      // Save to Supabase
+      if (isSupabaseConfigured()) {
+        try {
+          // Upsert the streak record
+          await supabase
+            .from('streak')
+            .upsert({ 
+              id: 1, 
+              count: newCount, 
+              last_updated: today 
+            })
+        } catch (error) {
+          console.error('Error updating streak:', error)
+        }
+      }
+      
+      // Save to localStorage as backup
+      localStorage.setItem(STORAGE_KEYS.STREAK, JSON.stringify(newStreak))
+    }
+  }, [streak])
+
+  // Check streak whenever messages change
+  useEffect(() => {
+    if (messages.length > 0 && !loading) {
+      checkAndUpdateStreak(messages)
+    }
+  }, [messages, loading])
+
   const value = {
     identity,
     selectIdentity,
@@ -418,6 +505,7 @@ export function AppProvider({ children }) {
     getPartnerAnswer,
     messages,
     sendMessage,
+    streak,
     loading,
     refreshData,
     isOnline: isSupabaseConfigured()

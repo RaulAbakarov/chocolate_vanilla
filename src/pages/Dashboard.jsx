@@ -24,7 +24,7 @@ function calculateTimeSince(startDate) {
 
 function Dashboard() {
   const navigate = useNavigate()
-  const { identity, clearIdentity, getQuestionsForMe, getMyQuestions, loading, refreshData, isOnline, messages, sendMessage } = useApp()
+  const { identity, clearIdentity, getQuestionsForMe, getMyQuestions, loading, refreshData, isOnline, messages, sendMessage, streak } = useApp()
   const [timeSince, setTimeSince] = useState(calculateTimeSince(START_DATE))
   const [loveWord, setLoveWord] = useState('love')
   const [isEditing, setIsEditing] = useState(false)
@@ -132,6 +132,19 @@ function Dashboard() {
             <span>hours</span>
             <span>min</span>
             <span>sec</span>
+          </div>
+        </div>
+
+        {/* Streak Display */}
+        <div className="streak-display">
+          <div className="streak-flame">
+            <span className="flame-icon">🔥</span>
+            <span className="flame-icon flame-2">🔥</span>
+            <span className="flame-icon flame-3">🔥</span>
+          </div>
+          <div className="streak-info">
+            <span className="streak-count">{streak.count}</span>
+            <span className="streak-label">day streak</span>
           </div>
         </div>
 
