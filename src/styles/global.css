@@ -163,3 +163,17 @@ textarea {
   text-align: center;
   padding: var(--space-xl);
 }
+
+/* App loading state */
+.app-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-loading p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-text-muted);
+}

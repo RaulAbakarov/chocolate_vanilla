@@ -5,16 +5,16 @@ import '../styles/landing.css'
 
 function Landing() {
   const navigate = useNavigate()
-  const { selectIdentity, identity } = useApp()
+  const { selectIdentity, identity, loading } = useApp()
   const [nickname, setNickname] = useState('')
   const [error, setError] = useState('')
 
   // Redirect to dashboard if already logged in
   useEffect(() => {
-    if (identity) {
+    if (!loading && identity) {
       navigate('/dashboard')
     }
-  }, [identity, navigate])
+  }, [identity, loading, navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -36,8 +36,8 @@ function Landing() {
     if (error) setError('')
   }
 
-  // Show nothing while redirecting
-  if (identity) {
+  // Show nothing while loading or redirecting
+  if (loading || identity) {
     return null
   }
 
