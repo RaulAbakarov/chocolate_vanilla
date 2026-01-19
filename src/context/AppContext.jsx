@@ -104,8 +104,16 @@ export function AppProvider({ children }) {
       })
       setAnsweredQuestions(formattedAnswers)
 
-      // Load messages
+      // Load messages (and cleanup old ones)
       try {
+        // First, delete messages older than 24 hours
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+        await supabase
+          .from('messages')
+          .delete()
+          .lt('created_at', twentyFourHoursAgo)
+
+        // Then load remaining messages
         const { data: messagesData, error: messagesError } = await supabase
           .from('messages')
           .select('*')
