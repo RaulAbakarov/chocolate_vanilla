@@ -138,6 +138,9 @@ function Dashboard() {
           </div>
         </div>
 
+        {/* Birthday Countdown */}
+        <BirthdayCountdown />
+
         {/* Streak Display */}
         <div className="streak-display">
           <div className="streak-flame">
@@ -233,9 +236,6 @@ function Dashboard() {
             </div>
           </div>
         )}
-
-        {/* Birthday Countdown */}
-        <BirthdayCountdown />
       </div>
     </div>
   )
