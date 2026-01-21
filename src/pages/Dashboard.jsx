@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 import { useLanguage } from '../context/LanguageContext'
+import BirthdayCountdown from '../components/BirthdayCountdown'
 import '../styles/dashboard.css'
 
 // October 11, 2025 - the day we first texted
@@ -232,6 +233,9 @@ function Dashboard() {
             </div>
           </div>
         )}
+
+        {/* Birthday Countdown */}
+        <BirthdayCountdown />
       </div>
     </div>
   )

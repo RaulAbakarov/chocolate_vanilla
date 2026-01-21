@@ -70,6 +70,12 @@ export const translations = {
 
     // Language
     language: 'Language',
+
+    // Birthday
+    birthdayCountdown: 'Birthday Countdown',
+    happyBirthday: 'Happy Birthday!',
+    augustSeven: 'August 7',
+    septemberSeven: 'September 7',
   },
 
   az: {
@@ -143,6 +149,12 @@ export const translations = {
 
     // Language
     language: 'Dil',
+
+    // Birthday
+    birthdayCountdown: 'Ad günü geri sayımı',
+    happyBirthday: 'Ad günün mübarək!',
+    augustSeven: '7 Avqust',
+    septemberSeven: '7 Sentyabr',
   },
 
   ru: {
@@ -216,6 +228,12 @@ export const translations = {
 
     // Language
     language: 'Язык',
+
+    // Birthday
+    birthdayCountdown: 'Обратный отсчёт до дня рождения',
+    happyBirthday: 'С днём рождения!',
+    augustSeven: '7 августа',
+    septemberSeven: '7 сентября',
   }
 }
 
