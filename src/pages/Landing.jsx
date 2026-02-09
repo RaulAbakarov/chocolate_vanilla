@@ -1,68 +1,21 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useApp } from '../context/AppContext'
-import { useLanguage } from '../context/LanguageContext'
 import '../styles/landing.css'
 
 function Landing() {
-  const navigate = useNavigate()
-  const { selectIdentity, identity, loading } = useApp()
-  const { t } = useLanguage()
-  const [nickname, setNickname] = useState('')
-  const [error, setError] = useState('')
-
-  // Redirect to dashboard if already logged in
-  useEffect(() => {
-    if (!loading && identity) {
-      navigate('/dashboard')
-    }
-  }, [identity, loading, navigate])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const input = nickname.trim().toLowerCase()
-    
-    if (input === 'vanilla') {
-      selectIdentity('Vanilla')
-      navigate('/dashboard')
-    } else if (input === 'chocolate') {
-      selectIdentity('Chocolate')
-      navigate('/dashboard')
-    } else {
-      setError('Invalid nickname')
-    }
-  }
-
-  const handleInputChange = (e) => {
-    setNickname(e.target.value)
-    if (error) setError('')
-  }
-
-  // Show nothing while loading or redirecting
-  if (loading || identity) {
-    return null
-  }
-
   return (
     <div className="landing">
-      <div className="landing-content">
-        <p className="landing-message">{t('landingMessage')}</p>
-        
-        <form className="login-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            className="nickname-input"
-            placeholder={t('enterNickname')}
-            value={nickname}
-            onChange={handleInputChange}
-            autoFocus
-          />
-          {error && <p className="login-error">{t('invalidNickname')}</p>}
-          <button type="submit" className="login-button">
-            {t('enter')}
-          </button>
-        </form>
+      <div className="grave-container">
+        <div className="grave">
+          <div className="grave-top"></div>
+          <div className="grave-body">
+            <div className="cross">✝</div>
+            <h1 className="rip">R.I.P</h1>
+            <p className="dates">15.01.2026 - 08.02.2026</p>
+            <p className="cause">Ölüm səbəbi: Yüksək sürət</p>
+          </div>
+        </div>
+        <div className="grave-ground"></div>
       </div>
+      <p className="reincarnation">Reinkarnasiyaya inanırsınmı?</p>
     </div>
   )
 }
