@@ -15,7 +15,7 @@ function Landing() {
         </div>
         <div className="grave-ground"></div>
       </div>
-      <p className="reincarnation">Reinkarnasiyaya inanırsınmı?</p>
+      <p className="reincarnation">Reinkarnasiyaya inanirsanmi?</p>
     </div>
   )
 }
