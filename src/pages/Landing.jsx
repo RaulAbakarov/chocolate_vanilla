@@ -42,7 +42,7 @@ function Landing() {
         ))}
       </div>
       <section className="hero-card">
-        <h1>Can i stand under your umbrella</h1>
+        <h1>Can i stand under your umbrella?</h1>
 
         <div className="spotify-wrap">
           <iframe
