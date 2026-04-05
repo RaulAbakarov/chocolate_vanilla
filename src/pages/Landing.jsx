@@ -1,28 +1,48 @@
 import '../styles/landing.css'
 
 function Landing() {
-  const drops = Array.from({ length: 18 })
+  const drops = Array.from({ length: 92 }, (_, index) => {
+    const seed = (step) => {
+      const value = Math.sin((index + 1) * 97.13 + step * 23.19) * 10000
+      return value - Math.floor(value)
+    }
+
+    return {
+      x: `${seed(1) * 100}%`,
+      delay: `${-seed(2) * 3.8}s`,
+      speed: `${0.78 + seed(3) * 1.2}s`,
+      length: `${16 + seed(4) * 42}px`,
+      width: `${0.9 + seed(5) * 1.5}px`,
+      drift: `${9 + seed(6) * 25}px`,
+      alpha: `${0.18 + seed(7) * 0.6}`,
+      blur: `${seed(8) * 0.9}px`,
+      depthClass: index % 3 === 0 ? 'drop-far' : index % 3 === 1 ? 'drop-mid' : 'drop-near',
+    }
+  })
 
   return (
     <main className="landing" aria-label="Umbrella Landing Page">
       <div className="mist-layer" aria-hidden="true"></div>
       <div className="rain-field" aria-hidden="true">
-        {drops.map((_, index) => (
+        {drops.map((drop, index) => (
           <span
             key={index}
-            className="drop"
+            className={`drop ${drop.depthClass}`}
             style={{
-              left: `${(index + 1) * 5.2}%`,
-              animationDelay: `${(index % 9) * 0.24}s`,
-              animationDuration: `${1.45 + (index % 5) * 0.28}s`,
+              '--x': drop.x,
+              '--delay': drop.delay,
+              '--speed': drop.speed,
+              '--length': drop.length,
+              '--width': drop.width,
+              '--drift': drop.drift,
+              '--alpha': drop.alpha,
+              '--blur': drop.blur,
             }}
           ></span>
         ))}
       </div>
       <section className="hero-card">
-        <p className="label">Now Playing Mood</p>
-        <h1>Can i stand under your umbrella?</h1>
-        <p className="subtext">A small corner for rainy-day energy in deep green tones.</p>
+        <h1>Can i stand under your umbrella</h1>
 
         <div className="spotify-wrap">
           <iframe
@@ -35,17 +55,7 @@ function Landing() {
             loading="lazy"
           ></iframe>
         </div>
-
-        <a
-          className="spotify-link"
-          href="https://open.spotify.com/track/49FYlytm3dAAraYgpoJZux?si=lnOUw9WlTeWfX80p7rXZIQ"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Open on Spotify
-        </a>
       </section>
-      <div className="rain-line" aria-hidden="true"></div>
     </main>
   )
 }

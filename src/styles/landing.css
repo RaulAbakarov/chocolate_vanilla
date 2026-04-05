@@ -1,12 +1,11 @@
 :root {
-  --bg-deep: #06160f;
-  --bg-mid: #0b2519;
-  --bg-soft: #123726;
-  --card: rgba(8, 32, 21, 0.78);
-  --line: rgba(140, 230, 178, 0.25);
-  --text-main: #e6fff0;
-  --text-soft: #aacdb9;
-  --accent: #8ef2ba;
+  --bg-deep: #0a1010;
+  --bg-mid: #111a19;
+  --bg-soft: #1e3430;
+  --card-top: rgba(13, 21, 20, 0.9);
+  --card-bottom: rgba(22, 36, 33, 0.78);
+  --line: rgba(188, 245, 211, 0.2);
+  --text-main: #eef7f3;
 }
 
 * {
@@ -15,12 +14,12 @@
 
 body {
   margin: 0;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
   color: var(--text-main);
   background:
-    radial-gradient(circle at 20% 18%, rgba(44, 117, 80, 0.45) 0%, rgba(44, 117, 80, 0) 38%),
-    radial-gradient(circle at 80% 72%, rgba(104, 204, 145, 0.18) 0%, rgba(104, 204, 145, 0) 42%),
-    linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 56%, var(--bg-soft) 100%);
+    radial-gradient(circle at 18% 12%, rgba(92, 151, 128, 0.22) 0%, rgba(92, 151, 128, 0) 39%),
+    radial-gradient(circle at 79% 84%, rgba(97, 169, 139, 0.18) 0%, rgba(97, 169, 139, 0) 35%),
+    linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 58%, var(--bg-soft) 100%);
   min-height: 100vh;
 }
 
@@ -41,13 +40,13 @@ body {
   position: absolute;
   inset: 0;
   background-image: repeating-linear-gradient(
-    104deg,
-    rgba(177, 255, 214, 0.07) 0,
-    rgba(177, 255, 214, 0.07) 2px,
+    108deg,
+    rgba(206, 248, 227, 0.06) 0,
+    rgba(206, 248, 227, 0.06) 2px,
     rgba(177, 255, 214, 0) 2px,
-    rgba(177, 255, 214, 0) 14px
+    rgba(177, 255, 214, 0) 17px
   );
-  opacity: 0.2;
+  opacity: 0.14;
   pointer-events: none;
 }
 
@@ -60,94 +59,67 @@ body {
 
 .drop {
   position: absolute;
-  top: -14%;
-  width: 1.5px;
-  height: 68px;
-  background: linear-gradient(180deg, rgba(188, 255, 219, 0.62) 0%, rgba(188, 255, 219, 0) 100%);
-  opacity: 0.58;
-  transform: rotate(10deg);
+  top: -12%;
+  left: var(--x);
+  width: var(--width);
+  height: var(--length);
+  background: linear-gradient(180deg, rgba(197, 243, 220, 0.86) 0%, rgba(197, 243, 220, 0) 100%);
+  opacity: var(--alpha);
+  transform: translate3d(0, 0, 0) rotate(12deg);
+  filter: blur(var(--blur));
   animation-name: rain-fall;
+  animation-duration: var(--speed);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  animation-delay: var(--delay);
+}
+
+.drop-far {
+  opacity: calc(var(--alpha) * 0.62);
+}
+
+.drop-mid {
+  opacity: calc(var(--alpha) * 0.82);
+}
+
+.drop-near {
+  opacity: var(--alpha);
 }
 
 .hero-card {
-  width: min(720px, 100%);
+  width: min(760px, 100%);
   border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 1.25rem;
-  background: linear-gradient(180deg, rgba(8, 30, 20, 0.96) 0%, var(--card) 100%);
-  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(4px);
+  border-radius: 30px;
+  padding: 1.4rem;
+  background: linear-gradient(180deg, var(--card-top) 0%, var(--card-bottom) 100%);
+  box-shadow: 0 26px 65px rgba(0, 0, 0, 0.44);
+  backdrop-filter: blur(8px);
   position: relative;
   z-index: 1;
   animation: rise-in 900ms ease-out both;
 }
 
-.label {
-  margin: 0;
-  font-size: 0.9rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
 .hero-card h1 {
-  margin: 0.55rem 0 0;
-  font-size: clamp(2rem, 5.2vw, 3.4rem);
-  line-height: 1;
-  font-weight: 500;
+  margin: 0 0 1.15rem;
+  font-family: 'Bodoni Moda', 'Times New Roman', serif;
+  font-size: clamp(2.2rem, 5.2vw, 4rem);
+  line-height: 0.98;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   text-wrap: balance;
-}
-
-.subtext {
-  margin: 0.8rem 0 1.25rem;
-  color: var(--text-soft);
-  font-size: 1.05rem;
-  line-height: 1.35;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
 .spotify-wrap {
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(170, 244, 201, 0.2);
+  border: 1px solid rgba(184, 241, 211, 0.22);
   background: #000;
 }
 
 .spotify-wrap iframe {
   display: block;
   width: 100%;
-}
-
-.spotify-link {
-  margin-top: 1rem;
-  display: inline-block;
-  color: var(--bg-deep);
-  background: var(--accent);
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  padding: 0.56rem 1rem;
-  border-radius: 999px;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-.spotify-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 26px rgba(142, 242, 186, 0.34);
-}
-
-.rain-line {
-  position: absolute;
-  top: -18%;
-  right: 8%;
-  width: 180px;
-  height: 135%;
-  background: linear-gradient(180deg, rgba(174, 255, 212, 0.3) 0%, rgba(174, 255, 212, 0) 70%);
-  transform: rotate(16deg);
-  filter: blur(2px);
-  pointer-events: none;
 }
 
 @keyframes rise-in {
@@ -164,33 +136,28 @@ body {
 
 @keyframes rain-fall {
   from {
-    transform: translate3d(0, 0, 0) rotate(10deg);
+    transform: translate3d(0, -6vh, 0) rotate(12deg);
     opacity: 0;
   }
 
-  15% {
-    opacity: 0.58;
+  12% {
+    opacity: var(--alpha);
   }
 
   to {
-    transform: translate3d(26px, 128vh, 0) rotate(10deg);
+    transform: translate3d(var(--drift), 113vh, 0) rotate(12deg);
     opacity: 0;
   }
 }
 
 @media (max-width: 640px) {
   .hero-card {
-    border-radius: 18px;
+    border-radius: 20px;
     padding: 1rem;
   }
 
-  .subtext {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-
   .spotify-wrap iframe {
-    height: 332px;
+    height: 310px;
   }
 }
 
